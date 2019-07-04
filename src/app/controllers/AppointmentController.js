@@ -39,7 +39,7 @@ class AppointmentController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json('Validations fails!');
+      return res.status(400).json({ error: 'Validations fails!' });
     }
 
     const { provider_id, date } = req.body;
@@ -51,13 +51,13 @@ class AppointmentController {
     if (!isProvider) {
       return res
         .status(401)
-        .json('You cant only create appointment providers!');
+        .json({ error: 'You cant only create appointment providers!' });
     }
 
     const hourStart = startOfHour(parseISO(date));
 
     if (isBefore(hourStart, new Date())) {
-      return res.status(400).json('Past date are not permitted!');
+      return res.status(400).json({ error: 'Past date are not permitted!' });
     }
 
     const checkAvaliability = await Appointment.findOne({
@@ -69,7 +69,9 @@ class AppointmentController {
     });
 
     if (checkAvaliability) {
-      return res.status(400).json('Appointment date is not available!');
+      return res
+        .status(400)
+        .json({ error: 'Appointment date is not available!' });
     }
 
     const appointment = await Appointment.create({
