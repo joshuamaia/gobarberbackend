@@ -30,6 +30,8 @@ routes.get('/providers', ProviderController.index);
 
 routes.get('/notifications', NotificationController.index);
 
+routes.put('/notifications/:id', NotificationController.update);
+
 routes.get('/schedule', ScheduleController.index);
 
 export default routes;
